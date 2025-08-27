@@ -85,6 +85,72 @@ class SimpleSwaggerController
                             'updatedAt' => ['type' => 'string', 'format' => 'date-time']
                         ]
                     ],
+                    'Form' => [
+                        'type' => 'object',
+                        'required' => ['id', 'title', 'fields'],
+                        'properties' => [
+                            'id' => ['type' => 'integer', 'example' => 1],
+                            'title' => ['type' => 'string', 'example' => 'Event Registration'],
+                            'description' => ['type' => 'string', 'example' => 'Registration form for annual event'],
+                            'fields' => ['type' => 'array', 'items' => ['type' => 'object']],
+                            'isActive' => ['type' => 'boolean', 'example' => true],
+                            'allowEditing' => ['type' => 'boolean', 'example' => true],
+                            'customUrl' => ['type' => 'string', 'example' => 'event-registration'],
+                            'createdBy' => ['type' => 'integer', 'example' => 1],
+                            'submissionCount' => ['type' => 'integer', 'example' => 42],
+                            'createdAt' => ['type' => 'string', 'format' => 'date-time'],
+                            'updatedAt' => ['type' => 'string', 'format' => 'date-time']
+                        ]
+                    ],
+                    'Submission' => [
+                        'type' => 'object',
+                        'required' => ['id', 'formId', 'data'],
+                        'properties' => [
+                            'id' => ['type' => 'integer', 'example' => 1],
+                            'uniqueId' => ['type' => 'string', 'example' => 'sub_abc123def456'],
+                            'formId' => ['type' => 'integer', 'example' => 1],
+                            'data' => ['type' => 'object'],
+                            'status' => ['type' => 'string', 'enum' => ['pending', 'completed', 'failed'], 'example' => 'pending'],
+                            'paymentMethod' => ['type' => 'string', 'example' => 'stripe'],
+                            'submitterInfo' => ['type' => 'object'],
+                            'paymentInfo' => ['type' => 'object'],
+                            'createdAt' => ['type' => 'string', 'format' => 'date-time'],
+                            'updatedAt' => ['type' => 'string', 'format' => 'date-time']
+                        ]
+                    ],
+                    'Payment' => [
+                        'type' => 'object',
+                        'required' => ['id', 'submissionId', 'amount', 'currency'],
+                        'properties' => [
+                            'id' => ['type' => 'integer', 'example' => 1],
+                            'submissionId' => ['type' => 'integer', 'example' => 123],
+                            'paymentMethod' => ['type' => 'string', 'example' => 'stripe'],
+                            'paymentId' => ['type' => 'string', 'example' => 'pi_1234567890'],
+                            'amount' => ['type' => 'number', 'format' => 'float', 'example' => 99.99],
+                            'currency' => ['type' => 'string', 'example' => 'USD'],
+                            'status' => ['type' => 'string', 'enum' => ['pending', 'processing', 'completed', 'failed', 'cancelled', 'refunded'], 'example' => 'completed'],
+                            'metadata' => ['type' => 'object'],
+                            'receiptUrl' => ['type' => 'string', 'example' => 'https://example.com/receipt/123'],
+                            'refundedAmount' => ['type' => 'number', 'format' => 'float', 'example' => 0.00],
+                            'createdAt' => ['type' => 'string', 'format' => 'date-time'],
+                            'updatedAt' => ['type' => 'string', 'format' => 'date-time']
+                        ]
+                    ],
+                    'Settings' => [
+                        'type' => 'object',
+                        'required' => ['id', 'key', 'value'],
+                        'properties' => [
+                            'id' => ['type' => 'integer', 'example' => 1],
+                            'key' => ['type' => 'string', 'example' => 'site_name'],
+                            'value' => ['type' => 'string', 'example' => 'Form Builder System'],
+                            'type' => ['type' => 'string', 'enum' => ['string', 'boolean', 'integer', 'float', 'json'], 'example' => 'string'],
+                            'description' => ['type' => 'string', 'example' => 'The name of the website'],
+                            'category' => ['type' => 'string', 'example' => 'general'],
+                            'isPublic' => ['type' => 'boolean', 'example' => false],
+                            'createdAt' => ['type' => 'string', 'format' => 'date-time'],
+                            'updatedAt' => ['type' => 'string', 'format' => 'date-time']
+                        ]
+                    ],
                     'ApiResponse' => [
                         'type' => 'object',
                         'required' => ['success', 'message'],
@@ -98,9 +164,13 @@ class SimpleSwaggerController
             ],
             'tags' => [
                 ['name' => 'Health', 'description' => 'System health checks'],
-                ['name' => 'Authentication', 'description' => 'User authentication'],
-                ['name' => 'Forms', 'description' => 'Form management'],
-                ['name' => 'Submissions', 'description' => 'Form submissions'],
+                ['name' => 'Authentication', 'description' => 'User authentication and authorization'],
+                ['name' => 'Forms', 'description' => 'Form management and configuration'],
+                ['name' => 'Submissions', 'description' => 'Form submission handling'],
+                ['name' => 'Payments', 'description' => 'Payment processing and management'],
+                ['name' => 'Admin', 'description' => 'Administrative operations'],
+                ['name' => 'Export', 'description' => 'Data export operations'],
+                ['name' => 'Settings', 'description' => 'System configuration'],
                 ['name' => 'Documentation', 'description' => 'API documentation']
             ],
             'paths' => [
